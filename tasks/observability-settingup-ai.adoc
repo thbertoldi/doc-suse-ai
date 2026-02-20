@@ -1,6 +1,6 @@
 [#observability-installing]
 = Setting up {sobservability} for {productname}
-:revdate: 2026-01-28
+:revdate: 2026-02-20
 :page-revdate: {revdate}
 
 {sobservability} provides comprehensive monitoring and insights into your infrastructure and applications.
@@ -120,10 +120,13 @@ Before creating the file, review the placeholders below.
 SUSE_OBSERVABILITY_API_URL:: The URL of the {sobservability} API.
 For multi-cluster deployments, this is the external URL.
 For single-cluster deployments, this can be the internal service URL.
-Example: `http://suse-observability-api.your-domain.com`
+Example: `https://suse-observability-api.your-domain.com`
 SUSE_OBSERVABILITY_API_KEY:: The API key from the `baseConfig_values.yaml` file used during the {sobservability} installation.
 SUSE_OBSERVABILITY_API_TOKEN_TYPE:: Can be `api` for a token from the Web UI or `service` for a Service Token.
 SUSE_OBSERVABILITY_TOKEN:: The API or Service token itself.
+TLS_CA_CERTIFICATE:: The CA certificate content in PEM format (optional).
+TLS_CLIENT_CERTIFICATE:: The client certificate content in PEM format (optional).
+TLS_CLIENT_KEY:: The client private key content in PEM format (optional).
 OBSERVED_SERVER_NAME:: The name of the cluster to observe.
 It must match the name used in the {kube} StackPack configuration.
 Example: `suse-ai-cluster`.
@@ -141,9 +144,17 @@ apiKey: <SUSE_OBSERVABILITY_API_KEY>
 tokenType: <SUSE_OBSERVABILITY_API_TOKEN_TYPE>
 apiToken: <SUSE_OBSERVABILITY_TOKEN>
 clusterName: <OBSERVED_SERVER_NAME>
+tls: <.>
+  enabled: false
+  skipVerify: false
+  certificates:
+    ca: "<TLS_CA_CERTIFICATE>"
+    client: "<TLS_CLIENT_CERTIFICATE>"
+    clientKey: "<TLS_CLIENT_KEY>"
 ----
 <.> Instructs {helm} to use credentials from the {sappco}.
 For instructions on how to configure the image pull secrets for the {sappco}, refer to the link:https://docs.apps.rancher.io/get-started/authentication/[official documentation].
+<.> Provides optional TLS configuration for secure communication.
 endif::[]
 ifdef::deployment_airgap[]
 [source,yaml]
@@ -157,9 +168,17 @@ apiKey: <SUSE_OBSERVABILITY_API_KEY>
 tokenType: <SUSE_OBSERVABILITY_API_TOKEN_TYPE>
 apiToken: <SUSE_OBSERVABILITY_TOKEN>
 clusterName: <OBSERVED_SERVER_NAME>
+tls: <.>
+  enabled: false
+  skipVerify: false
+  certificates:
+    ca: "<TLS_CA_CERTIFICATE>"
+    client: "<TLS_CLIENT_CERTIFICATE>"
+    clientKey: "<TLS_CLIENT_KEY>"
 ----
 <.> Instructs {helm} to use credentials from the {sappco}.
 For instructions on how to configure the image pull secrets for the {sappco}, refer to the link:https://docs.apps.rancher.io/get-started/authentication/[official documentation].
+<.> Provides optional TLS configuration for secure communication.
 endif::[]
 
 .. Run the install command.
@@ -176,16 +195,17 @@ ifdef::deployment_airgap[]
 [source,bash,subs="+attributes"]
 ----
 {prompt_user}helm upgrade --install ai-obs \
-  charts/suse-ai-observability-extension-<X.Y.Z>.tgz \
+  charts/suse-ai-observability-extension-1.5.0.tgz \
   -f genai_values.yaml --namespace so-extensions --create-namespace
 ----
 endif::[]
 +
 [NOTE]
-.Self-signed certificates not supported
+.TLS and self-signed certificates
 ====
-Self-signed certificates are not supported.
-Consider running the extension in the same cluster as {sobservability} and then use the internal {k8s} address.
+The extension supports TLS communication.
+If you are using self-signed certificates or a custom CA, you can provide the certificate content in the `tls.certificates` section of the `genai_values.yaml` file.
+Alternatively, consider running the extension in the same cluster as {sobservability} and then use the internal {k8s} address.
 ====
 +
 After the installation is complete, a new menu called btn:[GenAI] is added to the Web interface and also a {kube} cron job is created that synchronizes the topology view with the components found in the {productname} cluster.
