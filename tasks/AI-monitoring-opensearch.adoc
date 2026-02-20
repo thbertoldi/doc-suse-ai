@@ -1,0 +1,71 @@
+[#ai-monitoring-opensearch]
+= Monitoring {opensearch}
+:revdate: 2026-02-20
+:page-revdate: {revdate}
+
+{opensearch} is monitored using the {otelemetry} Collector's `elasticsearch` receiver.
+This configuration allows you to collect metrics such as disk usage, cluster health, and node performance.
+
+[#ai-monitoring-opensearch-config]
+== Configuring the {otelemetry} Collector
+
+To enable {opensearch} monitoring, update your `otel-values.yaml` file with the following configurations.
+
+. Update the collector image to use the `contrib` version, which includes the `elasticsearch` receiver.
++
+[source,yaml]
+----
+image:
+  registry: docker.io
+  repository: otel/opentelemetry-collector-contrib
+  tag: 0.140.0
+  pullPolicy: Always
+----
+
+. Add the `elasticsearch` receiver to the `config.receivers` section.
++
+[source,yaml]
+----
+config:
+  receivers:
+    elasticsearch:
+      endpoint: "http://opensearch-cluster-master-headless.<OPENSEARCH_NAMESPACE>.svc.cluster.local:9200" <.>
+      # If you have basic auth enabled:
+      username: "<USERNAME>"
+      password: "<PASSWORD>"
+      # If using self-signed certs or internal CAs:
+      tls:
+        insecure_skip_verify: true
+      collection_interval: 10s
+      # Optional: Enable detailed node metrics
+      metrics:
+        elasticsearch.node.fs.disk.total:
+          enabled: true
+        elasticsearch.node.fs.disk.available:
+          enabled: true
+----
+<.> Replace `<OPENSEARCH_NAMESPACE>` with the namespace where {opensearch} is installed.
+
+. Add `elasticsearch` to the `receivers` list in the `service.pipelines.metrics` section.
++
+[source,yaml]
+----
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp, spanmetrics, prometheus, elasticsearch]
+      processors: [memory_limiter, resource, batch]
+      exporters: [debug, otlp]
+----
+
+[#ai-monitoring-opensearch-apply]
+== Applying the configuration
+
+After updating the `otel-values.yaml` file, apply the changes by running the {helm} upgrade command.
+
+[source,bash,subs="+attributes"]
+----
+{prompt_user}helm upgrade --install opentelemetry-collector \
+  oci://dp.apps.rancher.io/charts/opentelemetry-collector \
+  -n observability -f otel-values.yaml
+----

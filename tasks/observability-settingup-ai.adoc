@@ -263,6 +263,11 @@ Create a new file named `otel-values.yaml` with the following content.
 ifdef::deployment_standard[]
 [source,yaml]
 ----
+image:
+  registry: docker.io
+  repository: otel/opentelemetry-collector-contrib
+  tag: 0.140.0
+  pullPolicy: Always
 global:
   imagePullSecrets:
   - application-collection
@@ -279,6 +284,21 @@ presets:
     extractAllPodLabels: true
 config:
   receivers:
+    elasticsearch:
+      endpoint: "http://opensearch-cluster-master-headless.<OPENSEARCH_NAMESPACE>.svc.cluster.local:9200"
+      # If you have basic auth enabled:
+      username: "admin"
+      password: "MySecurePass123"
+      # If using self-signed certs or internal CAs:
+      tls:
+        insecure_skip_verify: true
+      collection_interval: 10s
+      # Optional: Enable detailed node metrics
+      metrics:
+        elasticsearch.node.fs.disk.total:
+          enabled: true
+        elasticsearch.node.fs.disk.available:
+          enabled: true
     prometheus:
       config:
         scrape_configs:
@@ -384,7 +404,7 @@ config:
         processors: [tail_sampling, batch]
         exporters: [debug, otlp]
       metrics:
-        receivers: [otlp, spanmetrics, prometheus]
+        receivers: [otlp, spanmetrics, prometheus, elasticsearch]
         processors: [memory_limiter, resource, batch]
         exporters: [debug, otlp]
 ----
@@ -400,10 +420,14 @@ endif::[]
 ifdef::deployment_airgap[]
 [source,yaml]
 ----
+image:
+  registry: <LOCAL_DOCKER_REGISTRY_URL>:5043
+  repository: opentelemetry-collector-contrib
+  tag: 0.140.0
+  pullPolicy: Always
 global:
   imagePullSecrets:
   - application-collection
-  repository: <LOCAL_DOCKER_REGISTRY_URL>:5043/opentelemetry-collector-k8s
 extraEnvsFrom:
   - secretRef:
       name: open-telemetry-collector
@@ -417,6 +441,21 @@ presets:
     extractAllPodLabels: true
 config:
   receivers:
+    elasticsearch:
+      endpoint: "http://opensearch-cluster-master-headless.<OPENSEARCH_NAMESPACE>.svc.cluster.local:9200"
+      # If you have basic auth enabled:
+      username: "admin"
+      password: "MySecurePass123"
+      # If using self-signed certs or internal CAs:
+      tls:
+        insecure_skip_verify: true
+      collection_interval: 10s
+      # Optional: Enable detailed node metrics
+      metrics:
+        elasticsearch.node.fs.disk.total:
+          enabled: true
+        elasticsearch.node.fs.disk.available:
+          enabled: true
     prometheus:
       config:
         scrape_configs:
@@ -522,7 +561,7 @@ config:
         processors: [tail_sampling, batch]
         exporters: [debug, otlp]
       metrics:
-        receivers: [otlp, spanmetrics, prometheus]
+        receivers: [otlp, spanmetrics, prometheus, elasticsearch]
         processors: [memory_limiter, resource, batch]
         exporters: [debug, otlp]
 ----
