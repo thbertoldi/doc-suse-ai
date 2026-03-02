@@ -9,7 +9,7 @@ This configuration allows you to collect metrics such as disk usage, cluster hea
 [#ai-monitoring-opensearch-config]
 == Configuring the {otelemetry} Collector
 
-To enable {opensearch} monitoring, update your `otel-values.yaml` file with the following configurations.
+To enable {opensearch} monitoring, update the `otel-values.yaml` file with the following configurations.
 
 . Update the collector image to use the `contrib` version, which includes the `elasticsearch` receiver.
 +
