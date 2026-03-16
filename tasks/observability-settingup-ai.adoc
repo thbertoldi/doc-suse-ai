@@ -591,39 +591,43 @@ Create a file named `otel-rbac.yaml` with the following content:
 [source,yaml]
 ----
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
-  name: suse-observability-otel-scraper
+  name: otel-scraper-cluster-role
 rules:
   - apiGroups:
       - ""
     resources:
       - services
+      - pods
+      - nodes
       - endpoints
     verbs:
+      - get
       - list
       - watch
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
-  name: suse-observability-otel-scraper
+  name: otel-scraper-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: suse-observability-otel-scraper
+  kind: ClusterRole
+  name: otel-scraper-cluster-role
 subjects:
   - kind: ServiceAccount
     name: opentelemetry-collector
-    namespace: observability
+    namespace: <OTEL_NAMESPACE> <.>
 ----
+<.> Replace `<OTEL_NAMESPACE>` with the namespace where the {otelemetry} Collector is installed, for example, `observability`.
 +
 Then apply the configuration by running the following command.
 +
 [source,bash,subs="+attributes"]
 ----
-{prompt_user}kubectl apply -n gpu-operator -f otel-rbac.yaml
+{prompt_user}kubectl apply -f otel-rbac.yaml
 ----
 . *Install the {sobservability} Agent.*
 +
