@@ -300,17 +300,17 @@ Rancher supports Authorized Cluster Endpoints (ACE) for registered RKE2 and K3s 
  apiVersion: v1
  kind: Config
  clusters:
- ** name: Default
+   name: Default
 cluster:
   insecure-skip-tls-verify: true
   server: http://127.0.0.1:6440/v1/authenticate
  users:
- ** name: Default
+   name: Default
 user:
   insecure-skip-tls-verify: true
  current-context: webhook
  contexts:
- ** name: webhook
+   name: webhook
 context:
   user: Default
   cluster: Default
