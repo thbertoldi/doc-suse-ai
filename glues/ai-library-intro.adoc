@@ -33,7 +33,11 @@ Learn more on its dedicated link:https://apps.rancher.io/[Web site] and in the l
 Applications in the {sregistry} are not built by the {suse} build system.
 They are mirrored upstream projects with attached supply chain artifacts.
 These artifacts help you source popular applications and tools in the AI ecosystem from a single source and provide built-in visibility into their upstream origins.
-Learn more on the registry's link:https://registry.suse.com/[Web site] and refer to xref:ai-library-apps-verifying[] to see how to verify the supply chain artifacts.
+Learn more on the registry's link:https://registry.suse.com/[Web site]
+ifdef::deployment_standard[]
+and refer to xref:ai-library-apps-verifying[] to see how to verify the supply chain artifacts
+endif::[]
+.
 
 ifdef::deployment_standard[]
 You can install the required {ailibrary} component {helm} charts using one of the following methods:
