@@ -103,7 +103,6 @@ Specifically, the value should be a comma-delimited string which only contains I
 
 [NOTE]
 ====
-
 You can not re-register a cluster that is currently active in a Rancher setup.
 ====
 
