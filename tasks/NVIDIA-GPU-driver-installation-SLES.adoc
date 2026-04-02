@@ -28,7 +28,7 @@ endif::[]
 If you are following this guide, it assumes that you have the following
 already available:
 
-* At least one host with {slsa} {sles-ai-version} installed, physical or
+* At least one host with {slsa} {sles-version} installed, physical or
   virtual.
 * Your hosts are attached to a subscription as this is required for
   package access.

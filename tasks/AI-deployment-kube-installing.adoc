@@ -25,10 +25,10 @@ endif::[]
 
 . Install and register a supported Linux operating system on each cluster node.
   We recommend using one of the following operating systems:
-* {sls} {sles-ai-version} for a traditional non-transactional operating system.
+* {sls} {sles-version} for a traditional non-transactional operating system.
   For more information, see xref:sles-installation-quickstart[].
-* {slm} {slmicro-ai-version} for an immutable transactional operating system.
-  For more information, see link:https://documentation.suse.com/sle-micro/6.1/[{slm} {slmicro-ai-version} documentation].
+* {slm} {slmicro-version} for an immutable transactional operating system.
+  For more information, see link:https://documentation.suse.com/sle-micro/6.1/[{slm} {slmicro-version} documentation].
 +
 For a list of supported operating systems, refer to link:https://www.suse.com/suse-rancher/support-matrix/all-supported-versions/[].
 
