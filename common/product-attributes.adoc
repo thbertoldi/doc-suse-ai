@@ -11,6 +11,13 @@ ifeval::["{PROF_PRODUCT}" == "suseai"]
 
 :sles-version:   15 SP6
 :slmicro-version: 6.1
+endif
+
+ifeval::["{PROF_PRODUCT}" == "sles"]
+// PRODUCT NAME AND VERSIONS
+:productname:       SUSE Linux Enterprise Server
+:productnameshort:  SLES
+endif
 
 // PROJECT REPOSITORY URL
 :repo-url:          https://github.com/SUSE/doc-suse-ai
