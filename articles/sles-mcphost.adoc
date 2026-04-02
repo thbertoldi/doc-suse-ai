@@ -1,0 +1,53 @@
+:doctype: book
+:experimental:
+:docinfo:
+
+ifdef::env-github[]
+:imagesdir: ../images/
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+:revdate: 2026-04-02
+:page-revdate: {revdate}
+
+include::../common/generic-attributes.adoc[]
+= Setting up an MCP Host on {productname}
+
+WHAT?::
+  The mcphost is a CLI that serves as a host for the Model Context Protocol, enabling Large Language Models to interact with various configured tools and system services..
+
+WHY?::
+  You want to install the MCP host and integrate it with an LLM.
+
+EFFORT::
+  State the expected time investment and any required background knowledge.
+
+GOAL::
+  Describe the concrete outcome after the reader finishes this article.
+
+REQUIREMENTS::
+
+* An installed and properly registered instance of SLES 16.0.
+
+* Access to SUSE Customer Center (SCC) for update channels.
+
+* Network access to the internet and your chosen LLM provider.
+
+* A supported LLM backend 
+
+include::../concepts/mcphost-introduction.adoc[leveloffset=+1]
+
+
+include::../tasks/mcphost-installation.adoc[leveloffset=+1]
+
+include::../references/mcphost-configuration.adoc[leveloffset=+1]
+
+[appendix]
+include::../common/common_copyright_gfdl.adoc[]
+
+[appendix]
+include::../common/common_license_gfdl1.2.adoc[]
