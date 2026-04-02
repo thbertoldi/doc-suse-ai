@@ -66,11 +66,12 @@ Number of requests.
 *Unit:* integer 
 
 gen_ai.usage.cost::
-The distribution of GenAI request costs. 
+The distribution of GenAI request costs.
+This is a non-standard metric, available only when explicitly set by the application or when the application is instrumented with {openlit}.
 +
-*Type:* histogram 
+*Type:* histogram
 +
-*Unit:* USD 
+*Unit:* USD
 
 gen_ai.usage.input_tokens::
 Number of prompt tokens processed. 
