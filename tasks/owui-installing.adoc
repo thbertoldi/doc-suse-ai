@@ -44,7 +44,7 @@ For a list of all installation options with examples, refer to xref:owui-helmcha
 ----
 --
 
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [#owui-upgrading]
 == Upgrading {owui}
 
