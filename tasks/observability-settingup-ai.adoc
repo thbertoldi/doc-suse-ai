@@ -276,6 +276,12 @@ extraEnvsFrom:
   - secretRef:
       name: open-telemetry-collector
 mode: deployment
+clusterRole:
+  create: true
+  rules:
+    - apiGroups: [""]
+      resources: ["pods", "nodes", "endpoints", "services"]
+      verbs: ["get", "list", "watch"]
 image:
   registry: dp.apps.rancher.io
   repository: containers/suse-ai-otel-collector
@@ -619,6 +625,12 @@ extraEnvsFrom:
   - secretRef:
       name: open-telemetry-collector
 mode: deployment
+clusterRole:
+  create: true
+  rules:
+    - apiGroups: [""]
+      resources: ["pods", "nodes", "endpoints", "services"]
+      verbs: ["get", "list", "watch"]
 image:
   registry: <LOCAL_DOCKER_REGISTRY_URL>:5043
   repository: suse-ai-otel-collector
@@ -958,46 +970,6 @@ Finally, run the installation command.
 ----
 +
 Verify the installation by checking the existence of a new deployment and service in the observability namespace.
-. The GPU metrics scraper that we configure in the OTEL Collector requires custom RBAC rules.
-Create a file named `otel-rbac.yaml` with the following content:
-+
-[source,yaml]
-----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: suse-observability-otel-scraper
-rules:
-  - apiGroups:
-      - ""
-    resources:
-      - services
-      - endpoints
-    verbs:
-      - list
-      - watch
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: suse-observability-otel-scraper
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: suse-observability-otel-scraper
-subjects:
-  - kind: ServiceAccount
-    name: opentelemetry-collector
-    namespace: observability
-----
-+
-Then apply the configuration by running the following command.
-+
-[source,bash,subs="+attributes"]
-----
-{prompt_user}kubectl apply -n gpu-operator -f otel-rbac.yaml
-----
 . *Install the {sobservability} Agent.*
 +
 --

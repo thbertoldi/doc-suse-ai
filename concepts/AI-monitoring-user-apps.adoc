@@ -108,7 +108,7 @@ No metrics received from any components. ::
 
 No metrics received from the GPU. ::
 +
-* Verify if the RBAC rules were applied. 
+* Verify that the `clusterRole` configuration is included in the `otel-values.yaml` and the collector has been installed or upgraded with it.
 * Verify if the metrics receiver scraper is configured. 
 * Check the {nvidia} DCGM Exporter for errors. 
 
