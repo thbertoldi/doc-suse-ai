@@ -122,12 +122,14 @@ For multi-cluster deployments, this is the external URL.
 For single-cluster deployments, this can be the internal service URL.
 Example: `https://suse-observability-api.your-domain.com`
 SUSE_OBSERVABILITY_API_KEY:: The API key from the `baseConfig_values.yaml` file used during the {sobservability} installation.
-SUSE_OBSERVABILITY_API_TOKEN_TYPE:: Can be `api` for a token from the Web UI or `service` for a Service Token.
+SUSE_OBSERVABILITY_API_TOKEN_TYPE:: Can be `api` for a token from the Web UI or `service` for a Service Token (used for automation/CI).
 SUSE_OBSERVABILITY_TOKEN:: The API or Service token itself.
+Ignored if `existingSecret` is set.
 TLS_CA_CERTIFICATE:: The CA certificate content in PEM format (optional).
-OBSERVED_SERVER_NAME:: The name of the cluster to observe.
-It must match the name used in the {kube} StackPack configuration.
-Example: `suse-ai-cluster`.
+Ignored if `tls.existingSecret` is set.
+OBSERVED_CLUSTER_NAMES:: A list of {kube} cluster names to install StackPacks for.
+Each cluster listed here will get a kubernetes-v2 StackPack instance provisioned in {sobservability}.
+Example: `["suse-ai-cluster"]`.
 
 .. Create the `genai_values.yaml` file with the following content:
 +
@@ -139,8 +141,9 @@ global:
   - application-collection <.>
 serverUrl: <SUSE_OBSERVABILITY_API_URL>
 tokenType: <SUSE_OBSERVABILITY_API_TOKEN_TYPE>
-apiToken: <SUSE_OBSERVABILITY_TOKEN>
-kubernetesClusters: <OBSERVED_SERVER_NAME>
+apiToken: <SUSE_OBSERVABILITY_TOKEN> <.>
+kubernetesClusters: <.>
+  - <OBSERVED_CLUSTER_NAME>
 tls: <.>
   enabled: false
   skipVerify: false
@@ -150,7 +153,13 @@ tls: <.>
 ----
 <.> Instructs {helm} to use credentials from the {sappco}.
 For instructions on how to configure the image pull secrets for the {sappco}, refer to the link:https://docs.apps.rancher.io/get-started/authentication/[official documentation].
+<.> Alternatively, you can reference an existing {kube} secret by setting `existingSecret` and `existingSecretKey` instead of providing the token inline.
+This is the recommended approach for production deployments.
+<.> List of {kube} cluster names to install StackPacks for.
+Add one entry per cluster you want to observe.
 <.> Provides optional TLS configuration for secure communication.
+Set `tls.enabled` to `true` and provide a CA certificate via `tls.certificates.ca` or reference an existing secret with `tls.existingSecret`.
+Set `tls.skipVerify` to `true` only for development and testing environments.
 endif::[]
 ifdef::deployment_airgap[]
 [source,yaml]
@@ -161,8 +170,9 @@ global:
   imageRegistry: <LOCAL_DOCKER_REGISTRY_URL>:5043
 serverUrl: <SUSE_OBSERVABILITY_API_URL>
 tokenType: <SUSE_OBSERVABILITY_API_TOKEN_TYPE>
-apiToken: <SUSE_OBSERVABILITY_TOKEN>
-kubernetesClusters: <OBSERVED_SERVER_NAME>
+apiToken: <SUSE_OBSERVABILITY_TOKEN> <.>
+kubernetesClusters: <.>
+  - <OBSERVED_CLUSTER_NAME>
 tls: <.>
   enabled: false
   skipVerify: false
@@ -172,7 +182,13 @@ tls: <.>
 ----
 <.> Instructs {helm} to use credentials from the {sappco}.
 For instructions on how to configure the image pull secrets for the {sappco}, refer to the link:https://docs.apps.rancher.io/get-started/authentication/[official documentation].
+<.> Alternatively, you can reference an existing {kube} secret by setting `existingSecret` and `existingSecretKey` instead of providing the token inline.
+This is the recommended approach for production deployments.
+<.> List of {kube} cluster names to install StackPacks for.
+Add one entry per cluster you want to observe.
 <.> Provides optional TLS configuration for secure communication.
+Set `tls.enabled` to `true` and provide a CA certificate via `tls.certificates.ca` or reference an existing secret with `tls.existingSecret`.
+Set `tls.skipVerify` to `true` only for development and testing environments.
 endif::[]
 
 .. Run the install command.
