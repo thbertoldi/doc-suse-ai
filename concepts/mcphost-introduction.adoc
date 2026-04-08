@@ -3,7 +3,7 @@
 include::../common/generic-attributes.adoc[]
 // overridden title?
 ifndef::override-abstract[]
-The MCP Host (mcphost) is a command-line tool designed to act as a central mediator between a Large Language Model (LLM) and various specialized tools known as MCP servers.
+The MCP Host is a command-line tool designed to act as a central mediator between a Large Language Model (LLM) and various specialized tools known as MCP servers.
 endif::[]
 
 // erase the flag for future overrides
@@ -18,6 +18,6 @@ Its primary purpose is to provide a structured environment where an LLM can safe
 [#mcphost-introduction-how-it-works]
 == How does the MCP host work?
 
-On one hand it interacts with LLMs by establishing a connection to a provider, on the other hand it manages MCP Servers, which are the actual providers of "tools" or "capabilities."
+On the one hand, it interacts with LLMs by establishing a connection to a provider; on the other hand, it manages MCP Servers, which are the actual providers of "tools" or "capabilities."
 
 
