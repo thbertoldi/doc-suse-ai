@@ -218,6 +218,13 @@ If you are using self-signed certificates or a custom CA, you can provide the ce
 Alternatively, consider running the extension in the same cluster as {sobservability} and then use the internal {k8s} address.
 ====
 +
+[NOTE]
+.{otelemetry} GenAI Semantic Conventions compatibility
+====
+The {suseai} Observability Extension is compatible with the link:https://opentelemetry.io/docs/specs/semconv/gen-ai/[{otelemetry} Semantic Conventions for Generative AI] as defined in version v1.40.0.
+These conventions are currently in *Development* status within the {otelemetry} specification.
+====
++
 [IMPORTANT]
 .Upgrading from version 1.5.0 to 2.0.0
 ====
