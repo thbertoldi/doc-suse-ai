@@ -101,7 +101,7 @@ jobs:
       - name: Publishing builds on susedoc.github.io
         uses: openSUSE/doc-ci@gha-publish
         env:
-          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY_MODULAR }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY_SUSE_AI }}
         with:
           artifact-path: artifact-dir
           relevant-dirs: ${{ needs.select-dc-files.outputs.relevant-branches }}
