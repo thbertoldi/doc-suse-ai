@@ -32,6 +32,7 @@ include::../snippets/ai-rancher-admin-requirement.adoc[]
 . From the `Manage Repositories` page, verify if the {sailifecyclemanager} repository has the `Active` state.
   If not, refresh the connection.
 . Go back to the `Extensions` page and start the installation by clicking btn:[{sailifecyclemanager}].
+. Reload {ranchera} Dashboard by reloading the Web browser window to ensure the extension is loaded in the UI.
 
 [NOTE]
 ====

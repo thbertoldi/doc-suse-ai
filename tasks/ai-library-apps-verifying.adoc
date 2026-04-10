@@ -12,8 +12,8 @@ ifdef::override-abstract[]
 {override-abstract}
 endif::[]
 ifndef::override-abstract[]
-{ailibrary} applications are hosted in the private {suse}-trusted registries: {sappco} and {sregistry}.
-This section provides steps to verify the {ailibrary} artifacts using *cosign*--a tool for signing and verifying OCI containers and other artifacts.
+{ailibrary} applications are hosted in the private {suse} registries: {sappco} and {sregistry}.
+This section provides steps to verify the {ailibrary} artifacts using *cosign*---a tool for signing and verifying OCI containers and other artifacts.
 endif::[]
 
 // erase the flag for future overrides
@@ -110,7 +110,7 @@ To see exactly what types of attestations are available for a specific image (su
 <.> Provide {sregistry} password.
 
 This outputs a list of URIs.
-For example, `https://cyclonedx.org/bom` indicates that a CycloneDX Software Bill of Materials (SBOM) is attached.
+For example, `\https://cyclonedx.org/bom` indicates that a CycloneDX Software Bill of Materials (SBOM) is attached.
 ====
 
 [#extract-sbom-sregistry]

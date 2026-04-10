@@ -33,7 +33,7 @@ include::../snippets/ai-library-requirement.adoc[]
 . When installed as part of {productname}, {milvus} depends on {etcd}, {minio} and Apache Kafka.
 Because the {milvus} chart uses a non-default configuration, create an override file `milvus_custom_overrides.yaml` with the following content.
 +
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [TIP]
 ====
 As a template, you can download the {milvus} {helm} chart that includes the `values.yaml` file with the default configuration by running the following command:
@@ -44,14 +44,14 @@ As a template, you can download the {milvus} {helm} chart that includes the `val
 ----
 ====
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 [TIP]
 ====
 As a template, you can use the `values.yaml` file that is included in the `charts/milvus-<X.Y.Z>.tgz` TAR archive.
 ====
 endif::[]
 +
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [source,yaml]
 ----
 global:
@@ -111,7 +111,7 @@ extraConfigFiles: <.>
 <.> The `extraConfigFiles` section is optional, required only to receive telemetry data from {owui}.
 <.> The URL of the {otelemetry} Collector installed by the user.
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 [source,yaml]
 ----
 global:
@@ -180,7 +180,7 @@ For production environments, we recommend using an enterprise class storage solu
 ====
 . Install the {milvus} {helm} chart using the `milvus_custom_overrides.yaml` override file.
 +
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [source,bash,subs="+attributes"]
 ----
 {prompt_user}helm upgrade --install \
@@ -189,7 +189,7 @@ ifdef::deployment_standard[]
   --version 4.2.2 -f <milvus_custom_overrides.yaml>
 ----
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 [source,bash,subs="+attributes"]
 ----
 {prompt_user}helm upgrade --install \
@@ -252,7 +252,7 @@ parameters:
       storageClassName: longhorn-xfs
 ----
 
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [#milvus-upgrading]
 == Upgrading {milvus}
 

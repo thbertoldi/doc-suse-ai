@@ -98,10 +98,10 @@ This initial step is identical for both single-cluster and multi-cluster deploym
 --
 . *Install {sobservability}.*
 You can follow the official
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 link:https://documentation.suse.com/cloudnative/suse-observability/latest/en/classic.html[{sobservability} installation documentation]
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 link:https://documentation.suse.com/cloudnative/suse-observability/latest/en/k8s-suse-rancher-prime-air-gapped.html[{sobservability} air-gapped installation documentation]
 endif::[]
 for all installation instructions.
@@ -133,7 +133,7 @@ Example: `["suse-ai-cluster"]`.
 
 .. Create the `genai_values.yaml` file with the following content:
 +
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [source,yaml]
 ----
 global:
@@ -161,7 +161,7 @@ Add one entry per cluster you want to observe.
 Set `tls.enabled` to `true` and provide a CA certificate via `tls.certificates.ca` or reference an existing secret with `tls.existingSecret`.
 Set `tls.skipVerify` to `true` only for development and testing environments.
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 [source,yaml]
 ----
 global:
@@ -193,7 +193,7 @@ endif::[]
 
 .. Run the install command.
 +
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [source,bash,subs="+attributes"]
 ----
 {prompt_user}helm upgrade --install ai-obs \
@@ -201,7 +201,7 @@ ifdef::deployment_standard[]
   -f genai_values.yaml --namespace so-extensions --create-namespace
 ----
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 [source,bash,subs="+attributes"]
 ----
 {prompt_user}helm upgrade --install ai-obs \
@@ -277,7 +277,7 @@ kubectl create secret generic open-telemetry-collector \
 +
 Create a new file named `otel-values.yaml` with the following content.
 +
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [source,yaml]
 ----
 global:
@@ -626,7 +626,7 @@ Set `insecure_skip_verify` to `true` for self-signed certificates.
 Remember that the value can be distinct, depending on the deployment pattern.
 For production usage, we recommend using TLS communication.
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 [source,yaml]
 ----
 global:

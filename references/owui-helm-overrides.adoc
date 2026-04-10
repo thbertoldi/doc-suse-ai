@@ -9,7 +9,7 @@ include::../snippets/helm-chart-overrides-intro.adoc[]
 .{owui} override file with {ollama} included
 ====
 The following override file installs {ollama} during the {owui} installation.
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [source,yaml]
 ----
 global:
@@ -103,7 +103,7 @@ Refer to link:https://www.nltk.org/index.html[] for licensing information.
 <.> API key value for communication between {owui} and {owui} Pipelines.
 The default value is '0p3n-w3bu!'.
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 [source,yaml]
 ----
 global:
@@ -206,7 +206,7 @@ endif::[]
 .{owui} override file with {ollama} installed separately
 ====
 The following override file installs {ollama} separately from the {owui} installation.
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [source,yaml]
 ----
 global:
@@ -261,7 +261,7 @@ For production use, we recommend using a storage solution suitable for persisten
 <.> These values are optional, required only to receive telemetry data from {owui}.
 <.> The URL of the {otelemetry} Collector installed by the user.
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 [source,yaml]
 ----
 global:
@@ -329,7 +329,7 @@ This simple filter adds a limit to the number of question and answer turns durin
 =====
 Pipelines normally require additional configuration provided either via environment variables or specified in the {owui} Web UI.
 =====
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [source,yaml]
 ----
 global:
@@ -361,7 +361,7 @@ ingress:
 <.> A list of pipeline URLs to be downloaded and installed by default.
 Individual URLs are separated by a semicolon `;`.
 endif::[]
-ifdef::deployment_airgap[]
+ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 [source,yaml]
 ----
 global:
@@ -396,7 +396,7 @@ For air-gapped deployments, you need to provide the pipelines at URLs that are a
 endif::[]
 ====
 
-ifdef::deployment_standard[]
+ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 [#owui-ollama-deploy-vllm]
 .{owui} override file with a connection to {vllm}
 ====
