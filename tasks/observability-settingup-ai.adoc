@@ -270,16 +270,33 @@ The endpoint of the {sobservability} Collector.
 . *Install {nvoperator}.*
 Follow the instructions in link:https://documentation.suse.com/cloudnative/rke2/latest/en/advanced.html#_deploy_nvidia_operator[].
 . *Install {otelemetry} collector.*
-Create a secret with your {sobservability} API key in the namespace where you want to install the collector.
-Retrieve the API key using the Web UI or from the `baseConfig_values.yaml` file that you used during the {sobservability} installation.
-If the namespace does not exist yet, create it.
+Create the namespace for the collector if it does not exist yet.
 +
-[source,bash]
+[source,bash,subs="+attributes"]
 ----
-kubectl create namespace observability
-kubectl create secret generic open-telemetry-collector \
+{prompt_user}kubectl create namespace observability
+----
++
+Create a secret with your {sobservability} API key.
+Retrieve the API key using the Web UI or from the `baseConfig_values.yaml` file that you used during the {sobservability} installation.
++
+[source,bash,subs="+attributes"]
+----
+{prompt_user}kubectl create secret generic open-telemetry-collector \
   --namespace observability \
   --from-literal=API_KEY='<SUSE_OBSERVABILITY_API_KEY>'
+----
++
+Create the image pull secret for the {sregistry}.
+The username is `regcode` and the password is the {scca} registration code of your {productname} subscription.
++
+[source,bash,subs="+attributes"]
+----
+{prompt_user}kubectl create secret docker-registry suse-ai-registry \
+  --docker-server=registry.suse.com \
+  --docker-username=regcode \
+  --docker-password=<SCC_REG_CODE> \
+  -n observability
 ----
 +
 Create a new file named `otel-values.yaml` with the following content.
@@ -289,7 +306,7 @@ ifeval::["{PROF_DEPLOYMENT}" == "standard"]
 ----
 global:
   imagePullSecrets:
-  - application-collection
+  - suse-ai-registry
 extraEnvs:
   - name: K8S_CLUSTER_NAME
     value: "<CLUSTER_NAME>" <.>
@@ -306,10 +323,10 @@ clusterRole:
       resources: ["pods", "nodes", "endpoints", "services"]
       verbs: ["get", "list", "watch"]
 image:
-  registry: dp.apps.rancher.io
-  repository: containers/suse-ai-otel-collector
-  tag: 2.0.0
-  pullPolicy: Always
+  registry: registry.suse.com
+  repository: ai/containers/suse-ai-opentelemetry-collector
+  tag: 0.149.0
+  pullPolicy: IfNotPresent
 ports:
   metrics:
     enabled: true
@@ -638,7 +655,7 @@ ifeval::["{PROF_DEPLOYMENT}" == "airgapped"]
 ----
 global:
   imagePullSecrets:
-  - application-collection
+  - suse-ai-registry
 extraEnvs:
   - name: K8S_CLUSTER_NAME
     value: "<CLUSTER_NAME>" <.>
@@ -656,9 +673,9 @@ clusterRole:
       verbs: ["get", "list", "watch"]
 image:
   registry: <LOCAL_DOCKER_REGISTRY_URL>:5043
-  repository: suse-ai-otel-collector
-  tag: 2.0.0
-  pullPolicy: Always
+  repository: suse-ai-opentelemetry-collector
+  tag: 0.149.0
+  pullPolicy: IfNotPresent
 ports:
   metrics:
     enabled: true
