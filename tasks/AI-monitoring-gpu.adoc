@@ -15,7 +15,7 @@ These permissions are automatically configured when you install the collector wi
 If you installed the {otelemetry} Collector without the `clusterRole` configuration, you must upgrade the collector with the updated `otel-values.yaml` that includes the `clusterRole` section.
 ====
 +
-. *Configure the {otelemetry} Collector.* Add the following Prometheus receiver configuration to your {otelemetry} Collector's values file. This tells the collector to scrape metrics from any endpoint in the `gpu-operator` namespace every 10 seconds.
+. *Configure the {otelemetry} Collector.* Add the following {prometheus} receiver configuration to your {otelemetry} Collector's values file. This tells the collector to scrape metrics from any endpoint in the `gpu-operator` namespace every 10 seconds.
 +
 [source,yaml]
 ----
